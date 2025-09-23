@@ -71,7 +71,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
     private bool _cbModeActive = false;
 
     private void Awake() {
-        _moduleId = _moduleCount++;
+        _moduleId = ++_moduleCount;
 
         _audio = GetComponent<KMAudio>();
         _module = GetComponent<KMBombModule>();
