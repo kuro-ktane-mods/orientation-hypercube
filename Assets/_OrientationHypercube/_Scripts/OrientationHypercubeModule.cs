@@ -114,7 +114,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
 
     private void HandleRotationPress(string buttonName) {
         PlaySound("Button Press");
-        if (_isBusy || _isRecovery) {
+        if (_isBusy || _isRecovery || _isSolved) {
             return;
         }
 
@@ -138,7 +138,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
     private IEnumerator HandleSetPress() {
         PlaySound("Button Press");
 
-        if (_isBusy) {
+        if (_isBusy || _isSolved) {
             yield break;
         }
         if (_isRecovery) {
@@ -177,7 +177,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
             _highlightedFace = _panelButtonDirections[panelButton.transform.name];
         }
 
-        if (_isBusy || _isPreviewMode) {
+        if (_isBusy || _isSolved || _isPreviewMode) {
             return;
         }
 
@@ -190,7 +190,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
         panelButton.GetComponent<MeshRenderer>().material.color = Color.white * (49f / 255f);
         _highlightedFace = string.Empty;
 
-        if (_isBusy || _isPreviewMode) {
+        if (_isBusy || _isSolved || _isPreviewMode) {
             return;
         }
 
@@ -233,7 +233,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
     }
 
     private IEnumerator HandleCentrePress() {
-        if (_isBusy) {
+        if (_isBusy || _isSolved) {
             yield break;
         }
         if (_inputtedRotations.Count() > 0) {
@@ -402,6 +402,8 @@ public class OrientationHypercubeModule : MonoBehaviour {
         _isMuted = true;
         Log("Submitted the correct orientation!");
         Log("-=-=-=- Solved -=-=-=-");
+
+        _isBusy = false;
 
         float elapsedTime = 0;
         float[] rotationSpeeds = new float[3];
@@ -652,6 +654,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
         }
 
         yield return Press("SET");
+        yield return WaitWhileBusy();
     }
 
     private void CancelOppositeDirections() {
