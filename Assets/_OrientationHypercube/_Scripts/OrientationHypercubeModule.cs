@@ -465,6 +465,7 @@ public class OrientationHypercubeModule : MonoBehaviour {
         if (command == "TOGGLE") {
             yield return null;
             _centrePanelButton.OnInteract();
+            yield break;
         }
 
         string[] commands = command.Split(' ');
